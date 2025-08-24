@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Happy Birthday</title>
+  <style>
+    :root {
+      --neon-pink: #ff00ff;
+      --neon-blue: #00ffff;
+      --space-black: #0a0a1a;
+      --star-white: rgba(255, 255, 255, 0.8);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(45deg, var(--space-black) 60%, #2a0a4a);
+      overflow: hidden;
+      position: relative;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* Bintang background */
+    .stars {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      background: var(--star-white);
+      border-radius: 50%;
+      animation: twinkle 2s infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .birthdayCard {
+      position: relative;
+      width: clamp(220px, 45vw, 300px); /* lebih kecil */
+      height: clamp(320px, 60vh, 420px); /* lebih kecil */
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transform: perspective(2500px);
+      transition: 1s;
+      z-index: 1;
+    }
+
+    .cardFront {
+      position: relative;
+      background-color: #fff;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      transform-origin: left;
+      box-shadow: inset 100px 20px 100px rgba(0,0,0,.2),
+                  30px 0 50px rgba(255,0,255,0.5);
+      transition: .6s;
+      border: 2px solid var(--neon-pink);
+      border-radius: 10px;
+    }
+
+    .happy {
+      text-align: center;
+      margin: 20px; 
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+      -webkit-background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 15px var(--neon-pink));
+    }
+
+    .balloons {
+      position: absolute;
+    }
+
+    .balloonOne, .balloonTwo, .balloonThree, .balloonFour {
+      position: absolute;
+      width: 70px;
+      height: 90px;
+      border-radius: 50%;
+    }
+
+    .balloonOne { background-color: rgba(239,71,111,0.7); left:-5px; top:40px; }
+    .balloonTwo { background-color: rgba(6,214,160,0.7); left:50px; top:20px; }
+    .balloonThree { background-color: rgba(255,209,102,0.7); left:110px; top:40px; }
+    .balloonFour { background-color: rgba(17,138,178,0.7); left:170px; top:20px; }
+
+    .balloonOne:before, .balloonTwo:before, .balloonThree:before, .balloonFour:before {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 110px;
+      background-color: #ffd166;
+      top: 90px;
+      left: 34px;
+    }
+
+    .balloonOne:after, .balloonTwo:after, .balloonThree:after, .balloonFour:after {
+      content: "";
+      position: absolute;
+      border-right: 6px solid transparent;
+      border-left: 6px solid transparent;
+      top: 88px;
+      left: 28px;
+    }
+
+    .balloonOne:after { border-bottom: 8px solid #ef476f; }
+    .balloonTwo:after { border-bottom: 8px solid #06d6a0; }
+    .balloonThree:after { border-bottom: 8px solid #ffd166; }
+    .balloonFour:after { border-bottom: 8px solid #118ab2; }
+
+    .cat {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: clamp(60px, 14vw, 90px);
+      filter: drop-shadow(0 0 10px #fff);
+      animation: float 3s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .cardInside {
+      position: absolute;
+      background-color: #fff;
+      border: 2px solid var(--neon-blue);
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      left: 0;
+      top: 0;
+      box-shadow: inset 100px 20px 100px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    h3.back {
+      text-align: center;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-family: Calibri, sans-serif;
+      margin: 15px 0;
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .name {
+      display: block;
+      text-align: right;
+      margin-top: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Animasi balon & kucing */
+    @keyframes float {
+      0% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, -15px); }
+      100% { transform: translate(-50%, 0); }
+    }
+
+    .balloonOne { animation: float 4s ease-in-out infinite; }
+    .balloonTwo { animation: float 3s ease-in-out infinite; }
+    .balloonThree { animation: float 5s ease-in-out infinite; }
+    .balloonFour { animation: float 4.5s ease-in-out infinite; }
+
+    /* Kartu terbuka */
+    .openCard {
+      transform: perspective(2500px) rotate(5deg);
+      box-shadow: inset 100px 20px 100px rgba(0,0,0,.2), 0 10px 100px rgba(255,0,255,0.5);
+    }
+
+    .openCard .cardFront {
+      transform: rotateY(-160deg);
+    }
+
+    .openCard .happy {
+      visibility: hidden;
+    }
+
+    /* Tombol Next responsif */
+    .next-page-button {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 25px;
+      font-size: clamp(12px, 2vw, 16px);
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+      border: none;
+      border-radius: 30px;
+      color: white;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-blue);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .next-page-button.show {
+      opacity: 1;
+      pointer-events: auto;
+      animation: buttonPulse 1.5s infinite;
+    }
+
+    @keyframes buttonPulse {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div class="birthdayCard" id="card">
+    <div class="cardFront">
+      <h3 class="happy">HAPPY BIRTHDAY!</h3>
+      <div class="balloons">
+        <div class="balloonOne"></div>
+        <div class="balloonTwo"></div>
+        <div class="balloonThree"></div>
+        <div class="balloonFour"></div>
+      </div>
+    </div>
+    <div class="cardInside">
+      <h3 class="back">HAPPY BIRTHDAY!</h3>
+      <p>Hai Sayang</p>
+      <p>Selamat Ulang Tahun!! Semoga panjang umur sehat selalu, aku harap kamu tambah semangat kuliahnya dan ga gampang kesel lagi, aku juga bakal support kamu buat jadi yg lebih baik, maaf aku cuman bisa ngasih kek beginian, dan ga tau kamu suka apa engga sama hal jelek beginian, makasih juga udah sayang ke aku yg entah itu gimmick apa bukan, udah ah kepanjangan kaga cukup. Have a nice day sayang.</p>
+      <p>JGN LUPA GW ITU RAJA IBLIS</p>
+    </div>
+  </div>
+  <img src="gif_1.gif" alt="cat" class="cat">
+
+  <button class="next-page-button" id="nextBtn">TERAKHIR</button>
+
+  <script>
+    const card = document.getElementById('card');
+    const nextButton = document.getElementById('nextBtn');
+    let isOpen = false;
+
+    card.addEventListener('click', () => {
+      isOpen = !isOpen;
+      if (isOpen) {
+        card.classList.add('openCard');
+        setTimeout(() => {
+          nextButton.classList.add('show');
+        }, 700);
+      } else {
+        card.classList.remove('openCard');
+        nextButton.classList.remove('show');
+      }
+    });
+
+    nextButton.addEventListener('click', () => {
+      window.location.href = 'flower.html'; // Halaman tujuan
+    });
+
+    // Buat bintang
+    function createStars() {
+      const container = document.querySelector('.stars');
+      for (let i = 0; i < 150; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 3;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${Math.random() * 2}s`;
+        container.appendChild(star);
+      }
+    }
+    createStars();
+  </script>
+</body>
+</html>
